@@ -1,0 +1,33 @@
+{
+  "name": "scurvy",
+  "version": "0.0.0",
+  "description": "A reusable node.js module for handling user registration and login scenarios.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/spectrumbranch/scurvy.git"
+  },
+  "keywords": [
+    "authentication",
+    "password",
+    "user",
+    "registration",
+    "login"
+  ],
+  "author": "Christopher Bebry",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "958a281253ea428e9fd1c540aa7944058a2fb11c",
+  "devDependencies": {
+    "mocha": "~1.10.0"
+  },
+  "dependencies": {
+    "bcrypt": "~0.7.5"
+  }
+}
