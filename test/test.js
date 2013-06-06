@@ -2,7 +2,32 @@ var assert = require('assert');
 //var async = require('async'); //TODO cleanup later
 
 describe('Auth', function() {
-    describe('#generateNewHash(),#compareHashToPlaintext()', function() {
+    describe('#generateMetastateHashkey(),#validateMetastateHashkey()', function() {
+        it('should TODO.', function(done) {
+            var auth = require("../lib/auth");
+			var salt = "$2a$10$NX61LWLYI81/20Eo6FxfX.";
+			var email = "example@someone.org";
+            
+            auth.generateMetastateHashkey(email, salt, function(err, result) {
+                var hashkey = result.hashkey;
+                
+                assert(hashkey.length == 60); //expected length for right now
+                
+                auth.validateMetastateHashkey(hashkey, email, function(err, matchA) {
+                    assert(matchA == true);
+                    auth.validateMetastateHashkey("somebademail@elsewhere.it", hashkey, function(err, matchB) {
+                        assert(matchB == false);
+                        auth.validateMetastateHashkey(email, hashkey, function(err, matchC) {
+                            assert(matchC == false);
+							done();
+                        });
+                    });
+                });
+            });
+        });
+    });
+	
+	describe('#generateNewHash(),#comparePlaintextToHash()', function() {
         it('should create a hash from a plaintext password and a salt, and verify one way.', function(done) {
             var auth = require("../lib/auth");
             var inputPassword = "myPassword01";
@@ -10,17 +35,14 @@ describe('Auth', function() {
             auth.generateNewHash(inputPassword, function(err, result) {
                 var salt = result.salt;
                 var hash = result.hash;
-                
-                console.log(salt.length);
-                console.log(hash.length);
                 assert(salt.length == 29); //expected length for right now
                 assert(hash.length == 60); //expected length for right now
                 
-                auth.compareHashToPlaintext(inputPassword, hash, function(err, matchA) {
+                auth.comparePlaintextToHash(inputPassword, hash, function(err, matchA) {
                     assert(matchA == true);
-                    auth.compareHashToPlaintext("notMyPassword", hash, function(err, matchB) {
+                    auth.comparePlaintextToHash("notMyPassword", hash, function(err, matchB) {
                         assert(matchB == false);
-                        auth.compareHashToPlaintext(hash, inputPassword, function(err, matchC) {
+                        auth.comparePlaintextToHash(hash, inputPassword, function(err, matchC) {
                             assert(matchC == false);
                             done();
                         });
@@ -29,6 +51,7 @@ describe('Auth', function() {
             });
         });
     });
+	
 	describe('#setRounds()', function() {
         it('should only allow integers.', function(done) {
             var auth = require("../lib/auth");
