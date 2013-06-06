@@ -4,7 +4,7 @@ var assert = require('assert');
 describe('Auth', function() {
     describe('#generateMetastateHashkey(),#validateMetastateHashkey()', function() {
         it('should TODO.', function(done) {
-            var auth = require("../lib/auth");
+            var auth = require("../lib");
 			var salt = "$2a$10$NX61LWLYI81/20Eo6FxfX.";
 			var email = "example@someone.org";
             
@@ -29,7 +29,7 @@ describe('Auth', function() {
 	
 	describe('#generateNewHash(),#comparePlaintextToHash()', function() {
         it('should create a hash from a plaintext password and a salt, and verify one way.', function(done) {
-            var auth = require("../lib/auth");
+            var auth = require("../lib");
             var inputPassword = "myPassword01";
             
             auth.generateNewHash(inputPassword, function(err, result) {
@@ -54,11 +54,12 @@ describe('Auth', function() {
 	
 	describe('#setRounds()', function() {
         it('should only allow integers.', function(done) {
-            var auth = require("../lib/auth");
+            var auth = require("../lib");
 			assert.throws(function() { auth.setRounds(-1); }, Error);
 			assert.throws(function() { auth.setRounds('x'); }, Error);
 			assert.throws(function() { auth.setRounds(null); }, Error);
 			assert.doesNotThrow(function() { auth.setRounds(10); }, Error);
+			assert.throws(function() { auth.setRounds(5.5); }, Error);
 			done();
         });
     });
