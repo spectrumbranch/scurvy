@@ -68,7 +68,7 @@ Creates a 60 character hash and 29 character salt from ```input```. Calls ```cal
 
 
 ```comparePlaintextToHash(inputPassword, hash, callback)```
-Takes an ```inputPassword`` and  ```hash``` that was created with generateNewHash() (where inputPassword was the input) and returns a ```callback``` with method signature ```function(err, matches)``` where ```err``` is null when there is no error, and ```matches``` is true if the parameters validate, 
+Takes an ```inputPassword``` and  ```hash``` that was created with generateNewHash() (where inputPassword was the input) and returns a ```callback``` with method signature ```function(err, matches)``` where ```err``` is null when there is no error, and ```matches``` is true if the parameters validate, 
 
 
 ```scurvy.setRounds(rounds)```
@@ -76,4 +76,5 @@ Optional function. Internally, rounds defaults to 10.
 ```rounds``` Must be integer > 0.
 
 TODO:
-#generateMetastateHashkey(),#validateMetastateHashkey()
+-----
+generateMetastateHashkey(),validateMetastateHashkey()
