@@ -63,17 +63,24 @@ API
 ---
 
 
-```scurvy.generateNewHash(input, callback)```
+```
+scurvy.generateNewHash(input, callback)
+```
 Creates a 60 character hash and 29 character salt from ```input```. Calls ```callback``` when complete with method signature ```function (err, result)```. ```err``` is null when there is no error. ```result``` is an object with two fields ```salt``` and ```hash``` that are created by the hashing algorithm.  Asynchronous.
 
 
-```comparePlaintextToHash(inputPassword, hash, callback)```
-Takes an ```inputPassword``` and  ```hash``` that was created with generateNewHash() (where inputPassword was the input) and returns a ```callback``` with method signature ```function(err, matches)``` where ```err``` is null when there is no error, and ```matches``` is true if the parameters validate, 
+```
+scurvy.comparePlaintextToHash(inputPassword, hash, callback)
+```
+Takes an ```inputPassword``` and  ```hash``` that was created with generateNewHash() (where inputPassword was the input) and returns a ```callback``` with method signature ```function(err, matches)``` where ```err``` is null when there is no error, and ```matches``` is true if the parameters validate. Asynchronous.
 
+  
+```
+scurvy.setRounds(rounds)
+```  
 
-```scurvy.setRounds(rounds)```
 Optional function. Internally, rounds defaults to 10.
-```rounds``` Must be integer > 0.
+```rounds``` Must be integer > 0. Synchronous.
 
 TODO:
 -----
