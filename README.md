@@ -5,7 +5,7 @@ A reusable node.js module for handling user registration and login scenarios.
 
 MIT License
 
-version 0.0.1, experimental
+version 0.0.2, experimental
 
 Install
 -------
