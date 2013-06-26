@@ -3,7 +3,7 @@ var assert = require('assert');
 
 describe('Auth', function() {
     describe('#generateMetastateHashkey(),#validateMetastateHashkey()', function() {
-        it('should TODO.', function(done) {
+        it('should create a hashkey from an email and a salt, and verify one way.', function(done) {
             var auth = require("../lib");
 			var salt = "$2a$10$NX61LWLYI81/20Eo6FxfX.";
 			var email = "example@someone.org";
