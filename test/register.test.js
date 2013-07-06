@@ -1,6 +1,33 @@
 var assert = require('assert');
+var Sequelize = require('sequelize');
 
 describe('Register', function() {
+	var database_config_to_use = '';
+	switch (process.env.NODE_ENV) {
+		case 'test_travis':
+			database_config_to_use = './config/database.travis';
+			break;
+		case undefined:
+		case 'production':
+		case 'development':
+			database_config_to_use = './config/database';
+			break;
+	}
+
+	var dbconfig = require(database_config_to_use).config;
+
+	var dbname = dbconfig.db;
+	var dbhostname = dbconfig.hostname;
+	var dbport = dbconfig.port;
+	var dbuser = dbconfig.user;
+	var dbpassword = dbconfig.password;
+
+	var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
+		host: dbhostname,
+		port: dbport
+	});
+
+
     describe('#generateMetastateHashkey(),#validateMetastateHashkey()', function() {
         it('should create a hashkey from an email and a salt, and verify one way.', function(done) {
             var auth = require("../lib");
