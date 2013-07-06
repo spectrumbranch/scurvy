@@ -25,12 +25,11 @@
   "readmeFilename": "README.md",
   "gitHead": "958a281253ea428e9fd1c540aa7944058a2fb11c",
   "devDependencies": {
-    "mocha": "~1.10.0"
+    "mocha": "~1.10.0",
+    "sequelize": "~2.0.0-alpha2",
+    "mysql": "~2.0.0-alpha8"
   },
   "dependencies": {
-    "bcrypt": "~0.7.5",
-    "sequelize": "~2.0.0-alpha1",
-    "mysql": "~2.0.0-alpha8",
-    "hoek": "~0.9.1"
+    "bcrypt": "~0.7.5"
   }
 }
