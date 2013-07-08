@@ -7,6 +7,8 @@ MIT License
 
 version 0.0.3, experimental
 
+[![Build Status](https://api.travis-ci.org/spectrumbranch/scurvy.png)](http://travis-ci.org/spectrumbranch/scurvy)
+
 Install
 -------
 
