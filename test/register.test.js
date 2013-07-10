@@ -36,6 +36,8 @@ describe('Register', function() {
 		
 		scurvy.setupSync(hook, function(err) {
 			if (err) { console.log('Error when trying to sync scurvy tables.'); }
+			
+			
 			done();
 		});
 	});
