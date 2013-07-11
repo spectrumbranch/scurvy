@@ -1,11 +1,12 @@
 scurvy
+
 ======
 
 A reusable node.js module for handling user registration and login scenarios.
 
 MIT License
 
-version 0.0.3, experimental
+version 0.1.0, experimental
 
 [![Build Status](https://api.travis-ci.org/spectrumbranch/scurvy.png)](http://travis-ci.org/spectrumbranch/scurvy)
 
