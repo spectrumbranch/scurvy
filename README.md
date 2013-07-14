@@ -1,3 +1,5 @@
+<img src="https://raw.github.com/spectrumbranch/scurvy/master/images/scurvy-small.png" />
+
 scurvy
 
 ======
@@ -88,3 +90,8 @@ Optional function. Internally, rounds defaults to 10.
 TODO:
 -----
 generateMetastateHashkey(),validateMetastateHashkey()
+
+Acknowledgments
+===============
+
+Logo created by Ashley Fairweather - http://starforsaken101.deviantart.com
