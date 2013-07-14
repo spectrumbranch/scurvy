@@ -1,7 +1,6 @@
 <img src="https://raw.github.com/spectrumbranch/scurvy/master/images/scurvy-small.png" />
 
 scurvy
-
 ======
 
 A reusable node.js module for handling user registration and login scenarios.
