@@ -18,6 +18,7 @@ Install
 npm install scurvy --save
 ```
 
+Note: If you are a Windows user, you need to ensure that you have the dependencies for ```bcrypt``` (because cartography uses it in the authentication module ```scurvy```) found here: https://github.com/ncb000gt/node.bcrypt.js/#dependencies
 Running Tests
 -------------
 
