@@ -5,6 +5,10 @@ scurvy
 
 A reusable node.js module for handling user registration and login scenarios.
 
+Scurvy can be used to generate hashed passwords and validate them. It also comes with [Sequelize](https://github.com/sequelize/sequelize) integration for an easy setup of Users with metadata 'Metastate' objects.
+Scurvy handles the creation of tables, as it comes with built-in schemas. Use of the database features are not required, but are recommended.
+
+
 MIT License
 
 version 0.1.2, experimental
@@ -27,8 +31,10 @@ Running Tests
 npm test
 ```
 
-Usage
+Usage 
 -----
+
+This is a simple example that does not require use of any database:
 
 ```
 var scurvy = require('scurvy');
