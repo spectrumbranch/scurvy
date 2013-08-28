@@ -59,7 +59,7 @@ function hashPassword(callback) {
 		salt = result.salt;
 		hashed_password = result.hash;
 		callback();
-	}
+	});
 }
 
 function validate_credentials(callback) {
