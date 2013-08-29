@@ -171,6 +171,7 @@ module.exports.sequelize = sequelize;
 ```
 
 (in progress, to be continued)
+TODO: ```/lib/models/Map.js``` and ```/lib/models/Tile2D.js``` then the ```/lib/index.js``` that calls init on ```/lib/models/index.js```
 
 
 API
