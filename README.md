@@ -143,7 +143,7 @@ module.exports.init = function(virt_modules, done) {
 		var scurvy = require('scurvy');
 		scurvy.setupAssociations(model);
 
-		//cartography specific associations
+		//custom model associations
 		model.User.hasMany(model.Map);
 		model.Map.belongsTo(model.User);
 		model.Map.hasMany(model.Tile2D);
@@ -155,7 +155,7 @@ module.exports.init = function(virt_modules, done) {
 		scurvy.setupSync(model, function(err) {
 			if (err) { console.log('Error when trying to sync scurvy tables.'); }
 
-			//custom models specific tables
+			//custom models tables
 			model.Map.sync().success(function() {
 				model.Tile2D.sync().success(function() {
 					//callback
@@ -170,8 +170,70 @@ module.exports.init = function(virt_modules, done) {
 module.exports.sequelize = sequelize;
 ```
 
+Scurvy follows the sequelize convention for creating models. Any custom model that would integrate with scurvy's models (```User``` and ```Metastate```) would need to follow the sequelize model convention as well. The Tile2D and Map custom models in the example are as follows:
+
+```
+/lib/models/Map.js
+```
+
+```
+module.exports = function(sequelize, DataTypes) {
+    var Map = sequelize.define("Map", {
+        name: {
+            type: DataTypes.STRING(30),
+            validate: {
+                isAlphanumeric: true
+            }
+        },
+        width_tiles: {
+            type: DataTypes.INTEGER(11).UNSIGNED
+        },
+        height_tiles: {
+            type: DataTypes.INTEGER(11).UNSIGNED
+        },
+        square_size: {
+            type: DataTypes.INTEGER(11).UNSIGNED
+        }
+    }, {
+        freezeTableName: true
+    });
+
+    return Map;
+};
+```
+
+```
+/lib/models/Tile2D.js
+```
+
+```
+module.exports = function(sequelize, DataTypes) {
+    var Tile2D = sequelize.define("Tile2D", {
+        name: {
+            type: DataTypes.STRING(30),
+            validate: {
+                isAlphanumeric: true
+            }
+        },
+        index: {
+            type: DataTypes.INTEGER(11).UNSIGNED
+        },
+        tileset_id: {
+            type: DataTypes.INTEGER(11).UNSIGNED
+        },
+        tile_id: {
+            type: DataTypes.INTEGER(11).UNSIGNED
+        }
+    }, {
+        freezeTableName: true
+    });
+
+    return Tile2D;
+};
+```
+
 (in progress, to be continued)
-TODO: ```/lib/models/Map.js``` and ```/lib/models/Tile2D.js``` then the ```/lib/index.js``` that calls init on ```/lib/models/index.js```
+TODO: ```/lib/index.js``` that calls init on ```/lib/models/index.js```
 
 
 API
