@@ -1,6 +1,8 @@
-
 API and Usage Reference
 =======================
+
+Functions
+---------
 
 
 ```
