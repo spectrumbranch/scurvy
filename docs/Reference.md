@@ -1,7 +1,6 @@
 
-
-API
----
+API and Usage Reference
+=======================
 
 
 ```
@@ -26,6 +25,7 @@ Optional function. Internally, rounds defaults to 10.
 TODO:
 -----
 generateMetastateHashkey(),validateMetastateHashkey()
+
 Usage Without Database Features
 -------------------------------
 
