@@ -1,9 +1,10 @@
 var assert = require('assert');
+var should = require('should');
 var Sequelize = require('sequelize');
 var scurvy = require('../');
 var async = require('async');
 
-describe('Auth', function() {
+describe('no-db-functions', function() {
 
 	describe('#generateNewHash(),#comparePlaintextToHash()', function() {
         it('should create a hash from a plaintext password and a salt, and verify one way.', function(done) {
@@ -30,7 +31,7 @@ describe('Auth', function() {
     });
 });
 
-describe('Register', function() {
+describe('db-functions', function() {
 	before(function(done) {
 		var database_config_to_use = '';
 		switch (process.env.NODE_ENV) {
@@ -72,6 +73,23 @@ describe('Register', function() {
 		}, { force: true });
 	});
 
+	describe('#createUser() input validation', function() {
+		it('should error out if the input object does not at least contain the following properties: userid, email, passwrd, status.', function(done_final) {
+			async.parallel([
+				function(done) {
+					
+					scurvy.createUser({}, function(err, results) {
+						assert.ifError(err);
+						done();
+					});
+					
+				}
+			], 
+			function(err1, results1) {
+				done_final();
+			});
+		});
+	});
 
 	describe('#createUser(),#doesMetastateHashkeyHaveUser()', function() {
         it('should check the database to find a user for a given metastate hashkey. returns true if exists, else false', function(done_final) {

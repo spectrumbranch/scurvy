@@ -28,7 +28,8 @@
     "mocha": "~1.10.0",
     "sequelize": "~2.0.0-alpha2",
     "mysql": "~2.0.0-alpha8",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "should": "~1.2.2"
   },
   "dependencies": {
     "bcrypt": "~0.7.5"
