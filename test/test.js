@@ -77,12 +77,16 @@ describe('db-functions', function() {
 		it('should error out if the input object does not at least contain the following properties: userid, email, passwrd, status.', function(done_final) {
 			async.parallel([
 				function(done) {
-					
 					scurvy.createUser({}, function(err, results) {
-						assert.ifError(err);
+						assert(err instanceof Error);
 						done();
 					});
-					
+				},
+				function(done) {
+					scurvy.createUser({userid: 'test12315', email: 'rw4fwsx4@sdfsf.com', passwrd: 'securePassword0101', status: ''}, function(err, results) {
+						assert(err == null);
+						done();
+					});
 				}
 			], 
 			function(err1, results1) {
