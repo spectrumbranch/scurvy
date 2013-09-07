@@ -32,6 +32,7 @@
     "should": "~1.2.2"
   },
   "dependencies": {
-    "bcrypt": "~0.7.5"
+    "bcrypt": "~0.7.5",
+    "joi": "~1.2.0"
   }
 }
