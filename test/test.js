@@ -29,6 +29,41 @@ describe('no-db-functions', function() {
             });
         });
     });
+	
+    describe('#generateMetastateHashkey(),#validateMetastateHashkey()', function() {
+        it('should create a hashkey from an email and a salt, and verify one way.', function(done) {
+			var salt = "$2a$10$NX61LWLYI81/20Eo6FxfX.";
+			var email = "example@someone.org";
+            
+            scurvy.generateMetastateHashkey(email, salt, function(err, result) {
+                var hashkey = result.hashkey;
+                
+                assert(hashkey.length == 60); //expected length for right now
+                
+                scurvy.validateMetastateHashkey(hashkey, email, function(err, matchA) {
+                    assert(matchA == true);
+                    scurvy.validateMetastateHashkey("somebademail@elsewhere.it", hashkey, function(err, matchB) {
+                        assert(matchB == false);
+                        scurvy.validateMetastateHashkey(email, hashkey, function(err, matchC) {
+                            assert(matchC == false);
+							done();
+                        });
+                    });
+                });
+            });
+        });
+    });
+	
+	describe('#setRounds()', function() {
+        it('should only allow integers.', function(done) {
+			assert.throws(function() { scurvy.setRounds(-1); }, Error);
+			assert.throws(function() { scurvy.setRounds('x'); }, Error);
+			assert.throws(function() { scurvy.setRounds(null); }, Error);
+			assert.doesNotThrow(function() { scurvy.setRounds(10); }, Error);
+			assert.throws(function() { scurvy.setRounds(5.5); }, Error);
+			done();
+        });
+    });	
 });
 
 describe('db-functions', function() {
@@ -94,7 +129,7 @@ describe('db-functions', function() {
 			});
 		});
 	});
-
+	
 	describe('#createUser(),#doesMetastateHashkeyHaveUser()', function() {
         it('should check the database to find a user for a given metastate hashkey. returns true if exists, else false', function(done_final) {
 			//    #doesMetastateHashkeyHaveUser() setup using #createUser()
@@ -109,7 +144,6 @@ describe('db-functions', function() {
 					};
 					//status must be active, inactive, or deleted. if left out, status should default to inactive
 					scurvy.createUser(user_1, function(err, profile) {
-						console.log(JSON.stringify(err));
 						assert(err == null);
 						assert(profile !== null);
 						assert(profile.user !== null && profile.metastate !== null);
@@ -197,40 +231,4 @@ describe('db-functions', function() {
     });
 
 
-
-
-
-    describe('#generateMetastateHashkey(),#validateMetastateHashkey()', function() {
-        it('should create a hashkey from an email and a salt, and verify one way.', function(done) {
-			var salt = "$2a$10$NX61LWLYI81/20Eo6FxfX.";
-			var email = "example@someone.org";
-            
-            scurvy.generateMetastateHashkey(email, salt, function(err, result) {
-                var hashkey = result.hashkey;
-                
-                assert(hashkey.length == 60); //expected length for right now
-                
-                scurvy.validateMetastateHashkey(hashkey, email, function(err, matchA) {
-                    assert(matchA == true);
-                    scurvy.validateMetastateHashkey("somebademail@elsewhere.it", hashkey, function(err, matchB) {
-                        assert(matchB == false);
-                        scurvy.validateMetastateHashkey(email, hashkey, function(err, matchC) {
-                            assert(matchC == false);
-							done();
-                        });
-                    });
-                });
-            });
-        });
-    });
-	describe('#setRounds()', function() {
-        it('should only allow integers.', function(done) {
-			assert.throws(function() { scurvy.setRounds(-1); }, Error);
-			assert.throws(function() { scurvy.setRounds('x'); }, Error);
-			assert.throws(function() { scurvy.setRounds(null); }, Error);
-			assert.doesNotThrow(function() { scurvy.setRounds(10); }, Error);
-			assert.throws(function() { scurvy.setRounds(5.5); }, Error);
-			done();
-        });
-    });	
 })
