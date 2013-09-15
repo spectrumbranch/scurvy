@@ -67,6 +67,7 @@ describe('no-db-functions', function() {
 });
 
 describe('db-functions', function() {
+	var hook = {};
 	before(function(done) {
 		var database_config_to_use = '';
 		switch (process.env.NODE_ENV) {
@@ -94,19 +95,43 @@ describe('db-functions', function() {
 			sync: { force: true },
 			logging: false
 		});
-		var hook = {};
+		//var hook = {};
 		hook.sequelize = sequelize;
 		
 		scurvy.loadModels(hook);
 		scurvy.setupAssociations(hook);
 		
+		//assert();
+		
 		scurvy.setupSync(hook, function(err) {
-			if (err) { console.log('Error when trying to sync scurvy tables.'); }
-			
+			assert(err == null);
 			
 			done();
 		}, { force: true });
 	});
+	
+	describe('#loadModels()', function() {
+		it ('should load the models User and Metastate into the sequelize hook.', function(done_final) {
+			assert(hook.User !== undefined);
+			assert(hook.Metastate !== undefined);
+			done_final();
+		})
+	});
+	
+	describe('#setupAssociations()', function() {
+		it ('should setup the sequelize hook so that User and Metastate can be associated.', function(done_final) {
+			hook.User.create({ userid: 'testassocuser', salt:'dfgfdgdfgdfg', hash:'etcetc101badhash', email: 'x@y.com' }).success(function(user) {
+				hook.Metastate.create({ status: 'active', hashkey: 'etc2349badhash' }).success(function(metastate) {
+					assert(metastate.UserId == undefined);
+					user.setMetastate(metastate).success(function() {
+						assert(user.id === metastate.UserId);
+						done_final();
+					});
+				});
+			});
+		})
+	});
+	
 
 	describe('#createUser() input validation', function() {
 		it('should error out if the input object does not at least contain the following properties: userid, email, passwrd, status.', function(done_final) {
