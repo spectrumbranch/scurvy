@@ -55,7 +55,7 @@ describe('no-db-functions', function() {
     });
 	
 	describe('#setRounds()', function() {
-        it('should only allow integers.', function(done) {
+        it('should only allow positive integers.', function(done) {
 			assert.throws(function() { scurvy.setRounds(-1); }, Error);
 			assert.throws(function() { scurvy.setRounds('x'); }, Error);
 			assert.throws(function() { scurvy.setRounds(null); }, Error);
