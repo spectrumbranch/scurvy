@@ -150,16 +150,17 @@ models.forEach(function(model) {
 });
 
 module.exports.init = function(virt_modules, done) {
-	console.log("lib/models/index::init()");
-
 	for (var i = 0; i < virt_modules.length; i++) {
 		virt_modules[i].loadModels(module.exports);
 	}
-    (function(model) {
-        //define all associations
+	(function(model) {
+		//define all associations
 
+		
+		//Obtain reference to scurvy from a central location
+		var scurvy = require('../').Scurvy;
+		
 		//scurvy associations
-		var scurvy = require('scurvy');
 		scurvy.setupAssociations(model);
 
 		//custom model associations
@@ -168,7 +169,7 @@ module.exports.init = function(virt_modules, done) {
 		model.Map.hasMany(model.Tile2D);
 		model.Tile2D.belongsTo(model.Map);
         
-        //ensure tables are created with the fields and associations
+		//ensure tables are created with the fields and associations
 
 		//scurvy tables
 		scurvy.setupSync(model, function(err) {
