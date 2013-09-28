@@ -155,6 +155,28 @@ describe('db-functions', function() {
 		});
 	});
 	
+	describe('#verifyCredentials() input validation', function() {
+		it('should error out if the input object does not at least contain the following properties: userid, passwrd.', function(done_final) {
+			async.parallel([
+				function(done) {
+					scurvy.verifyCredentials({}, function(err, results) {
+						assert(err instanceof Error);
+						done();
+					});
+				}//,
+				//function(done) {
+				//	scurvy.createUser({userid: 'test12315', email: 'rw4fwsx4@sdfsf.com', passwrd: 'securePassword0101', status: ''}, function(err, results) {
+				//		assert(err == null);
+				//		done();
+				//	});
+				//}
+			], 
+			function(err1, results1) {
+				done_final();
+			});
+		});
+	});
+	
 	describe('#createUser(),#doesMetastateHashkeyHaveUser()', function() {
         it('should check the database to find a user for a given metastate hashkey. returns true if exists, else false', function(done_final) {
 			//    #doesMetastateHashkeyHaveUser() setup using #createUser()
