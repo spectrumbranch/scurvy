@@ -163,13 +163,7 @@ describe('db-functions', function() {
 						assert(err instanceof Error);
 						done();
 					});
-				}//,
-				//function(done) {
-				//	scurvy.createUser({userid: 'test12315', email: 'rw4fwsx4@sdfsf.com', passwrd: 'securePassword0101', status: ''}, function(err, results) {
-				//		assert(err == null);
-				//		done();
-				//	});
-				//}
+				}
 			], 
 			function(err1, results1) {
 				done_final();
