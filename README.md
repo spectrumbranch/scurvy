@@ -29,6 +29,7 @@ Note: If you are a Windows user, you need to ensure that you have the dependenci
 ## More information
 
 - [API reference](/docs/Reference.md)
+- [Roadmap](/docs/Roadmap.md)
 - If you encounter an issue -- or even have a simple question -- please feel free to open an issue.
 - Logo created by Ashley Fairweather - http://starforsaken101.deviantart.com
 
