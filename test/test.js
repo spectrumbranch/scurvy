@@ -1,8 +1,9 @@
 var assert = require('assert');
 var should = require('should');
 var Sequelize = require('sequelize');
-var scurvy = require('../');
 var async = require('async');
+var scurvy = require('../');
+
 
 describe('no-db-functions', function() {
 
@@ -155,6 +156,8 @@ describe('db-functions', function() {
 		});
 	});
 	
+	
+	
 	describe('#verifyCredentials() input validation', function() {
 		it('should error out if the input object does not at least contain the following properties: userid, passwrd.', function(done_final) {
 			async.parallel([
@@ -168,6 +171,36 @@ describe('db-functions', function() {
 			function(err1, results1) {
 				done_final();
 			});
+		});
+	});
+	describe('#verifyCredentials()', function() {
+		it('should return a user object for successful credentials, or returns false if there is no match.', function(done_final) {
+			scurvy.createUser({ userid: 'testVerifyCred', email: 'rw4fw4@sdfsf.com', passwrd: 'myPassword201', status: 'active' }, function(err, results) {
+				async.parallel([
+					function(done) {
+						scurvy.verifyCredentials({userid: 'testVerifyCred', passwrd: 'myPassword201'}, function(verify_err, verify_result) {
+							assert(verify_err == null);
+							assert(verify_result != null);
+							assert(verify_result != false);
+							assert(verify_result.userid == 'testVerifyCred');
+							assert(verify_result.metastate != undefined);
+							done();
+						});
+					},
+					function(done) {
+						scurvy.verifyCredentials({userid: 'nottheuser', passwrd: 'sdkjfsa23'}, function(verify_err, verify_result) {
+							assert(verify_err == null);
+							assert(verify_result == false);
+							assert(verify_result.user == undefined);
+							done();
+						});
+					}
+				], 
+				function(err1, results1) {
+					done_final();
+				});
+			});
+			
 		});
 	});
 	
