@@ -204,6 +204,18 @@ describe('db-functions', function() {
 		});
 	});
 	
+	describe('#activateUser()', function() {
+		it('should change the metastate status of a user to active.', function(done_final) {
+			scurvy.createUser({ userid: 'testActivate', email: 'z12s@sdfsf.com', passwrd: 'myPassword561', status: 'inactive' }, function(err, user) {
+				scurvy.activateUser(user, function(err_activate, worked) {
+					assert(err_activate == null);
+					assert(worked);
+					done_final();
+				});
+			});
+		});
+	});
+	
 	describe('#createUser(),#doesMetastateHashkeyHaveUser()', function() {
         it('should check the database to find a user for a given metastate hashkey. returns true if exists, else false', function(done_final) {
 			//    #doesMetastateHashkeyHaveUser() setup using #createUser()
