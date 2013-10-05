@@ -5,23 +5,25 @@ var async = require('async');
 var scurvy = require('../');
 
 
+var Scurvy = scurvy.createInstance()
+
 describe('no-db-functions', function() {
 
 	describe('#generateNewHash(),#comparePlaintextToHash()', function() {
         it('should create a hash from a plaintext password and a salt, and verify one way.', function(done) {
             var inputPassword = "myPassword01";
             
-            scurvy.generateNewHash(inputPassword, function(err, result) {
+            Scurvy.generateNewHash(inputPassword, function(err, result) {
                 var salt = result.salt;
                 var hash = result.hash;
                 assert(salt.length == 29); //expected length for right now
                 assert(hash.length == 60); //expected length for right now
                 
-                scurvy.comparePlaintextToHash(inputPassword, hash, function(err, matchA) {
+                Scurvy.comparePlaintextToHash(inputPassword, hash, function(err, matchA) {
                     assert(matchA == true);
-                    scurvy.comparePlaintextToHash("notMyPassword", hash, function(err, matchB) {
+                    Scurvy.comparePlaintextToHash("notMyPassword", hash, function(err, matchB) {
                         assert(matchB == false);
-                        scurvy.comparePlaintextToHash(hash, inputPassword, function(err, matchC) {
+                        Scurvy.comparePlaintextToHash(hash, inputPassword, function(err, matchC) {
                             assert(matchC == false);
                             done();
                         });
@@ -36,16 +38,16 @@ describe('no-db-functions', function() {
 			var salt = "$2a$10$NX61LWLYI81/20Eo6FxfX.";
 			var email = "example@someone.org";
             
-            scurvy.generateMetastateHashkey(email, salt, function(err, result) {
+            Scurvy.generateMetastateHashkey(email, salt, function(err, result) {
                 var hashkey = result.hashkey;
                 
                 assert(hashkey.length == 60); //expected length for right now
                 
-                scurvy.validateMetastateHashkey(hashkey, email, function(err, matchA) {
+                Scurvy.validateMetastateHashkey(hashkey, email, function(err, matchA) {
                     assert(matchA == true);
-                    scurvy.validateMetastateHashkey("somebademail@elsewhere.it", hashkey, function(err, matchB) {
+                    Scurvy.validateMetastateHashkey("somebademail@elsewhere.it", hashkey, function(err, matchB) {
                         assert(matchB == false);
-                        scurvy.validateMetastateHashkey(email, hashkey, function(err, matchC) {
+                        Scurvy.validateMetastateHashkey(email, hashkey, function(err, matchC) {
                             assert(matchC == false);
 							done();
                         });
@@ -57,11 +59,11 @@ describe('no-db-functions', function() {
 	
 	describe('#setRounds()', function() {
         it('should only allow positive integers.', function(done) {
-			assert.throws(function() { scurvy.setRounds(-1); }, Error);
-			assert.throws(function() { scurvy.setRounds('x'); }, Error);
-			assert.throws(function() { scurvy.setRounds(null); }, Error);
-			assert.doesNotThrow(function() { scurvy.setRounds(10); }, Error);
-			assert.throws(function() { scurvy.setRounds(5.5); }, Error);
+			assert.throws(function() { Scurvy.setRounds(-1); }, Error);
+			assert.throws(function() { Scurvy.setRounds('x'); }, Error);
+			assert.throws(function() { Scurvy.setRounds(null); }, Error);
+			assert.doesNotThrow(function() { Scurvy.setRounds(10); }, Error);
+			assert.throws(function() { Scurvy.setRounds(5.5); }, Error);
 			done();
         });
     });	
@@ -99,12 +101,12 @@ describe('db-functions', function() {
 		//var hook = {};
 		hook.sequelize = sequelize;
 		
-		scurvy.loadModels(hook);
-		scurvy.setupAssociations(hook);
+		Scurvy.loadModels(hook);
+		Scurvy.setupAssociations(hook);
 		
 		//assert();
 		
-		scurvy.setupSync(hook, function(err) {
+		Scurvy.setupSync(hook, function(err) {
 			assert(err == null);
 			
 			done();
@@ -138,13 +140,13 @@ describe('db-functions', function() {
 		it('should error out if the input object does not at least contain the following properties: userid, email, passwrd, status.', function(done_final) {
 			async.parallel([
 				function(done) {
-					scurvy.createUser({}, function(err, results) {
+					Scurvy.createUser({}, function(err, results) {
 						assert(err instanceof Error);
 						done();
 					});
 				},
 				function(done) {
-					scurvy.createUser({userid: 'test12315', email: 'rw4fwsx4@sdfsf.com', passwrd: 'securePassword0101', status: ''}, function(err, results) {
+					Scurvy.createUser({userid: 'test12315', email: 'rw4fwsx4@sdfsf.com', passwrd: 'securePassword0101', status: ''}, function(err, results) {
 						assert(err == null);
 						done();
 					});
@@ -162,7 +164,7 @@ describe('db-functions', function() {
 		it('should error out if the input object does not at least contain the following properties: userid, passwrd.', function(done_final) {
 			async.parallel([
 				function(done) {
-					scurvy.verifyCredentials({}, function(err, results) {
+					Scurvy.verifyCredentials({}, function(err, results) {
 						assert(err instanceof Error);
 						done();
 					});
@@ -175,10 +177,10 @@ describe('db-functions', function() {
 	});
 	describe('#verifyCredentials()', function() {
 		it('should return a user object for successful credentials, or returns false if there is no match.', function(done_final) {
-			scurvy.createUser({ userid: 'testVerifyCred', email: 'rw4fw4@sdfsf.com', passwrd: 'myPassword201', status: 'active' }, function(err, results) {
+			Scurvy.createUser({ userid: 'testVerifyCred', email: 'rw4fw4@sdfsf.com', passwrd: 'myPassword201', status: 'active' }, function(err, results) {
 				async.parallel([
 					function(done) {
-						scurvy.verifyCredentials({userid: 'testVerifyCred', passwrd: 'myPassword201'}, function(verify_err, verify_result) {
+						Scurvy.verifyCredentials({userid: 'testVerifyCred', passwrd: 'myPassword201'}, function(verify_err, verify_result) {
 							assert(verify_err == null);
 							assert(verify_result != null);
 							assert(verify_result != false);
@@ -188,7 +190,7 @@ describe('db-functions', function() {
 						});
 					},
 					function(done) {
-						scurvy.verifyCredentials({userid: 'nottheuser', passwrd: 'sdkjfsa23'}, function(verify_err, verify_result) {
+						Scurvy.verifyCredentials({userid: 'nottheuser', passwrd: 'sdkjfsa23'}, function(verify_err, verify_result) {
 							assert(verify_err == null);
 							assert(verify_result == false);
 							assert(verify_result.user == undefined);
@@ -206,8 +208,8 @@ describe('db-functions', function() {
 	
 	describe('#activateUser()', function() {
 		it('should change the metastate status of a user to active.', function(done_final) {
-			scurvy.createUser({ userid: 'testActivate', email: 'z12s@sdfsf.com', passwrd: 'myPassword561', status: 'inactive' }, function(err, user) {
-				scurvy.activateUser(user, function(err_activate, worked) {
+			Scurvy.createUser({ userid: 'testActivate', email: 'z12s@sdfsf.com', passwrd: 'myPassword561', status: 'inactive' }, function(err, user) {
+				Scurvy.activateUser(user, function(err_activate, worked) {
 					assert(err_activate == null);
 					assert(worked);
 					done_final();
@@ -229,7 +231,7 @@ describe('db-functions', function() {
 						status: 'inactive'
 					};
 					//status must be active, inactive, or deleted. if left out, status should default to inactive
-					scurvy.createUser(user_1, function(err, profile) {
+					Scurvy.createUser(user_1, function(err, profile) {
 						assert(err == null);
 						assert(profile !== null);
 						assert(profile.user !== null && profile.metastate !== null);
@@ -249,7 +251,7 @@ describe('db-functions', function() {
 						status: 'active'
 					};
 					//status must be active, inactive, or deleted. if left out, status should default to inactive
-					scurvy.createUser(user_2, function(err, profile) {
+					Scurvy.createUser(user_2, function(err, profile) {
 						assert(err == null);
 						assert(profile !== null);
 						assert(profile.user !== null && profile.metastate !== null);
@@ -268,7 +270,7 @@ describe('db-functions', function() {
 						status: 'deleted'
 					};
 					//status must be active, inactive, or deleted. if left out, status should default to inactive
-					scurvy.createUser(user_3, function(err, profile) {
+					Scurvy.createUser(user_3, function(err, profile) {
 						assert(err == null);
 						assert(profile !== null);
 						assert(profile.user !== null && profile.metastate !== null);
@@ -285,7 +287,7 @@ describe('db-functions', function() {
 				async.parallel([
 					function(done) {
 						//1.a.) Should exist
-						scurvy.doesMetastateHashkeyHaveUser(hashkeys[0], function(errHash1, hash1Exists) {
+						Scurvy.doesMetastateHashkeyHaveUser(hashkeys[0], function(errHash1, hash1Exists) {
 							assert(errHash1 == null);
 							assert(hash1Exists);
 							done();
@@ -293,7 +295,7 @@ describe('db-functions', function() {
 					},
 					function(done) {
 						//2.a.) Should not exist
-						scurvy.doesMetastateHashkeyHaveUser(hashkeys[1], function(errHash2, hash2Exists) {
+						Scurvy.doesMetastateHashkeyHaveUser(hashkeys[1], function(errHash2, hash2Exists) {
 							assert(errHash2 == null);
 							assert(!hash2Exists);
 							done();
@@ -301,7 +303,7 @@ describe('db-functions', function() {
 					},
 					function(done) {
 						//3.a.) Should not exist
-						scurvy.doesMetastateHashkeyHaveUser(hashkeys[2], function(errHash3, hash3Exists) {
+						Scurvy.doesMetastateHashkeyHaveUser(hashkeys[2], function(errHash3, hash3Exists) {
 							assert(errHash3 == null);
 							assert(!hash3Exists);
 							done();
