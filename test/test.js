@@ -5,7 +5,7 @@ var async = require('async');
 var scurvy = require('../');
 
 
-var Scurvy = scurvy.createInstance()
+var Scurvy = scurvy.createInstance({ showTrace: true });
 
 describe('no-db-functions', function() {
 
