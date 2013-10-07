@@ -7,7 +7,7 @@ Functions
 #### `createInstance([config])`
 Create an instance of Scurvy with config applied if specified.
 
-#### `config` options:
+#### config options:
 
 - `showTrace` - Enables internal trace logging to console.log. For debug and development purposes.
 <p></p>
