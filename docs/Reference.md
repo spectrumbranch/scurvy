@@ -5,7 +5,7 @@ Functions
 ---------
 
 #### `createInstance([config])`
-Create an instance of Scurvy with config applied if specified.
+Returns a new instance of Scurvy with config applied if specified.
 
 #### config options:
 
