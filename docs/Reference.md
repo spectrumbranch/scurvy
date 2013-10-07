@@ -38,6 +38,10 @@ Creates a user with given ```params```. Required fields for ```params``` include
 ```status``` must be either ```'active'```, ```'inactive'```, or ```'deleted'```. If left blank, ```status``` will default to ```inactive```.
 Upon completion, ```callback``` will be called with method signature ```callback(err, result)``` where result will be an object containing sequelize object references to the newly created  ```user``` and ```metastate``` if ```err``` is null.
 
+#### `activateUser(input, callback)`
+Takes a sequelize object reference of a User instance that has a property `input.metastate` and sets the `status` property to `active`.
+The callback function is fired with method signature `callback(err, successful)`, and `successful` is true when the user was successfully updated.
+
 
 
 Usage Without Database Features
