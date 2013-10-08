@@ -9,12 +9,12 @@ Returns a new instance of Scurvy with config applied if specified.
 
 #### config options:
 
-- `showTrace` - Enables internal trace logging to console.log. For debug and development purposes.
+- `showTrace` - Enables internal trace logging to console.log. A boolean value for debug and development purposes. Defaults to `false`.
 <p></p>
-- `authSchema` - Choose a standard method of login. When this value is changed in an existing installation, the assumed table structure will change -- resulting in the need to alter or drop/recreate tables. It is suggested to pick the one that suits you best and stick with your choice.
+- `authSchema` - Choose a standard method of login. When this String value is changed in an existing installation, the assumed table structure will change -- resulting in the need to alter or drop/recreate tables. It is suggested to pick the one that suits you best and stick with your choice.
 `authSchema` can be set to one of the following modes:
-  - `userid` - Uses a userid field as the login name. Also includes an email address field. Default.
-  - `email` - Uses the user's email address as the login name.
+  - `'userid'` - Uses a userid field as the login name. Also includes an email address field. Default value.
+  - `'email'` - Uses the user's email address as the login name.
 
 
 
