@@ -5,10 +5,10 @@ var async = require('async');
 var scurvy = require('../');
 
 
-var Scurvy = scurvy.createInstance({ showTrace: true });
+
 
 describe('no-db-functions', function() {
-
+	var Scurvy = scurvy.createInstance();
 	describe('#generateNewHash(),#comparePlaintextToHash()', function() {
         it('should create a hash from a plaintext password and a salt, and verify one way.', function(done) {
             var inputPassword = "myPassword01";
@@ -70,6 +70,7 @@ describe('no-db-functions', function() {
 });
 
 describe('db-functions', function() {
+	var Scurvy = scurvy.createInstance();
 	var hook = {};
 	before(function(done) {
 		var database_config_to_use = '';
@@ -98,13 +99,10 @@ describe('db-functions', function() {
 			sync: { force: true },
 			logging: false
 		});
-		//var hook = {};
 		hook.sequelize = sequelize;
 		
 		Scurvy.loadModels(hook);
 		Scurvy.setupAssociations(hook);
-		
-		//assert();
 		
 		Scurvy.setupSync(hook, function(err) {
 			assert(err == null);
@@ -319,4 +317,82 @@ describe('db-functions', function() {
     });
 
 
+})
+
+
+
+describe('db-functions-config-authSchema-email', function() {
+	var Scurvy = scurvy.createInstance( { authSchema: 'email' } );
+	var hook = {};
+	before(function(done) {
+		var database_config_to_use = '';
+		switch (process.env.NODE_ENV) {
+			case 'test_travis':
+				database_config_to_use = './config/database.travis';
+				break;
+			case undefined:
+			case 'production':
+			case 'development':
+				database_config_to_use = './config/database';
+				break;
+		}
+
+		var dbconfig = require(database_config_to_use).config;
+
+		var dbname = dbconfig.db;
+		var dbhostname = dbconfig.hostname;
+		var dbport = dbconfig.port;
+		var dbuser = dbconfig.user;
+		var dbpassword = dbconfig.password;
+
+		var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
+			host: dbhostname,
+			port: dbport,
+			sync: { force: true },
+			logging: false
+		});
+		//var hook = {};
+		hook.sequelize = sequelize;
+		
+		Scurvy.loadModels(hook);
+		Scurvy.setupAssociations(hook);
+		
+		//assert();
+		
+		Scurvy.setupSync(hook, function(err) {
+			assert(err == null);
+			
+			done();
+		}, { force: true });
+	});
+	
+	describe('#User model', function() {
+		it ('should not have the userid field when authSchema is configured to email mode.', function(done_final) {
+			assert(hook.User.rawAttributes.userid === undefined);
+			done_final();
+		})
+	});
+	
+	// describe('#createUser() input validation', function() {
+		// it('should error out if the input object does not at least contain the following properties: userid, email, passwrd, status.', function(done_final) {
+			// async.parallel([
+				// function(done) {
+					// Scurvy.createUser({}, function(err, results) {
+						// assert(err instanceof Error);
+						// done();
+					// });
+				// },
+				// function(done) {
+					// Scurvy.createUser({userid: 'test12315', email: 'rw4fwsx4@sdfsf.com', passwrd: 'securePassword0101', status: ''}, function(err, results) {
+						// assert(err == null);
+						// done();
+					// });
+				// }
+			// ], 
+			// function(err1, results1) {
+				// done_final();
+			// });
+		// });
+	// });
+	
 })
