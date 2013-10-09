@@ -386,4 +386,28 @@ describe('db-functions-config-authSchema-email', function() {
 		});
 	});
 	
+	describe('#verifyCredentials()', function() {
+		it('should return a user object for successful credentials (email, passwrd) with no error, or returns false if there is no match.', function(done_final) {
+			Scurvy.createUser({ email: 'oneemail@something.com', passwrd: 'myPassword201', status: 'active' }, function(err, results) {
+				async.parallel([
+					function(done) {
+						Scurvy.verifyCredentials({email: 'oneemail@something.com', passwrd: 'myPassword201'}, function(verify_err, verify_result) {
+							assert(verify_err == null);
+							assert(verify_result != null);
+							assert(verify_result != false);
+							assert(verify_result.email == 'oneemail@something.com');
+							assert(verify_result.metastate != undefined);
+							done();
+						});
+					}
+				], 
+				function(err1, results1) {
+					done_final();
+				});
+			});
+			
+		});
+	});
+	
+	
 })
