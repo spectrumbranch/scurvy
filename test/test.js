@@ -351,13 +351,10 @@ describe('db-functions-config-authSchema-email', function() {
 			sync: { force: true },
 			logging: false
 		});
-		//var hook = {};
 		hook.sequelize = sequelize;
 		
 		Scurvy.loadModels(hook);
 		Scurvy.setupAssociations(hook);
-		
-		//assert();
 		
 		Scurvy.setupSync(hook, function(err) {
 			assert(err == null);
@@ -367,32 +364,26 @@ describe('db-functions-config-authSchema-email', function() {
 	});
 	
 	describe('#User model', function() {
-		it ('should not have the userid field when authSchema is configured to email mode.', function(done_final) {
+		it('should not have the userid field when authSchema is configured to email mode.', function(done_final) {
 			assert(hook.User.rawAttributes.userid === undefined);
 			done_final();
 		})
 	});
 	
-	// describe('#createUser() input validation', function() {
-		// it('should error out if the input object does not at least contain the following properties: userid, email, passwrd, status.', function(done_final) {
-			// async.parallel([
-				// function(done) {
-					// Scurvy.createUser({}, function(err, results) {
-						// assert(err instanceof Error);
-						// done();
-					// });
-				// },
-				// function(done) {
-					// Scurvy.createUser({userid: 'test12315', email: 'rw4fwsx4@sdfsf.com', passwrd: 'securePassword0101', status: ''}, function(err, results) {
-						// assert(err == null);
-						// done();
-					// });
-				// }
-			// ], 
-			// function(err1, results1) {
-				// done_final();
-			// });
-		// });
-	// });
+	describe('#createUser()', function() {
+		it('should not error out if the input object only provides the following fields: email, passwrd, status.', function(done_final) {
+			async.parallel([
+				function(done) {
+					Scurvy.createUser({ email: 'onlyMyEmail@sdfsf.com', passwrd: 'securePassword0101', status: '' }, function(err, results) {
+						assert(err == null);
+						done();
+					});
+				}
+			], 
+			function(err1, results1) {
+				done_final();
+			});
+		});
+	});
 	
 })
