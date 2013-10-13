@@ -70,9 +70,10 @@ describe('no-db-functions', function() {
 });
 
 describe('db-functions', function() {
-	var Scurvy = scurvy.createInstance();
+	var Scurvy = {};
 	var hook = {};
 	before(function(done) {
+		Scurvy = scurvy.createInstance();
 		var database_config_to_use = '';
 		switch (process.env.NODE_ENV) {
 			case 'test_travis':
@@ -217,7 +218,7 @@ describe('db-functions', function() {
 	});
 	
 	describe('#createUser(),#doesMetastateHashkeyHaveUser()', function() {
-        it('should check the database to find a user for a given metastate hashkey. returns true if exists, else false', function(done_final) {
+		it('should check the database to find a user for a given metastate hashkey. returns true if exists, else false', function(done_final) {
 			//    #doesMetastateHashkeyHaveUser() setup using #createUser()
 			async.parallel([
 				function(done) {
@@ -313,18 +314,17 @@ describe('db-functions', function() {
 					done_final();
 				});
 			});
-        });
-    });
+		});
+	});
 
 
 })
 
-
-
 describe('db-functions-config-authSchema-email', function() {
-	var Scurvy = scurvy.createInstance( { authSchema: 'email' } );
+	var Scurvy = {};
 	var hook = {};
 	before(function(done) {
+		Scurvy = scurvy.createInstance( { authSchema: 'email' } );
 		var database_config_to_use = '';
 		switch (process.env.NODE_ENV) {
 			case 'test_travis':
@@ -362,10 +362,11 @@ describe('db-functions-config-authSchema-email', function() {
 			done();
 		}, { force: true });
 	});
-	
+
 	describe('#User model', function() {
 		it('should not have the userid field when authSchema is configured to email mode.', function(done_final) {
 			assert(hook.User.rawAttributes.userid === undefined);
+			
 			done_final();
 		})
 	});

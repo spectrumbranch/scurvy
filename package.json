@@ -25,7 +25,7 @@
   "readmeFilename": "README.md",
   "gitHead": "958a281253ea428e9fd1c540aa7944058a2fb11c",
   "devDependencies": {
-    "mocha": "~1.10.0",
+    "mocha": "~1.13.0",
     "sequelize": "~2.0.0-alpha2",
     "mysql": "~2.0.0-alpha8",
     "async": "~0.2.9",
