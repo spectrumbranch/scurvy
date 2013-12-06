@@ -1,4 +1,3 @@
-
 Usage Without Database Features
 -------------------------------
 
@@ -205,3 +204,37 @@ module.exports = function(sequelize, DataTypes) {
 
 (in progress, to be continued)
 TODO: ```/lib/index.js``` that calls init on ```/lib/models/index.js```
+
+
+
+___
+
+Extending the User Model
+========================
+
+Say you want your `User` to have a `Preference` where you can set what `theme` the user picked in your application.
+This is a one to one relationship. Create `Preference` as a `sequelize` model and associate as you would normally given the `sequelize` API.
+
+`
+preference.js
+`
+```
+module.exports = function(sequelize, DataTypes) {
+    var Preference = sequelize.define("Preference", {
+        theme: {
+            type: DataTypes.STRING(30)
+        }
+    }, {
+        freezeTableName: true
+    });
+    return Preference;
+};
+```
+
+`
+Setting up associations.
+`
+```
+model.User.hasOne(model.Preference);
+model.Preference.belongsTo(model.User);
+```
