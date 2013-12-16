@@ -56,6 +56,8 @@ Upon completion, ```callback``` will be called with method signature ```callback
 Takes a sequelize object reference of a User instance that has a property `input.metastate` and sets the `status` property to `active`.
 The callback function is fired with method signature `callback(err, successful)`, and `successful` is true when the user was successfully updated. Asynchronous.
 
-#### `verifyCredentials(credentials, callback)`
-Checks the database to see if the given `credentials` are valid for an existing user, and returns the user. The `credentials` object requires different parameters depending on the configuration -- if `authSchema` is set to `userid`, pass in the object like: `{ userid 'theuserid', passwrd: 'thepassword' }` and if `authSchema` is set to `email`, pass in the object like: `{ email 'theemail@domain.com', passwrd: 'thepassword' }`. The `callback` is called with method signature `callback(err, user)` where the `user` will be a valid retrieved `User` object if the `credentials` are valid, else it will be `false`.
+#### `verifyCredentials(input, callback)`
+Checks the database to see if the given `input` credentials are valid for an existing user, and returns the user. The `input` object requires different credential parameters depending on the configuration -- if `authSchema` is set to `userid`, pass in the object like: `{ userid 'theuserid', passwrd: 'thepassword' }` and if `authSchema` is set to `email`, pass in the object like: `{ email 'theemail@domain.com', passwrd: 'thepassword' }`.
+To retrieve custom user-associated objects from the database, an array of sequelize models can be passed into `input.include`. The returned `user` object from the `callback` will include these objects if they exist.
+The `callback` is called with method signature `callback(err, user)` where the `user` will be a valid retrieved `User` object if the `input` credentials are valid, else it will be `false`.
 

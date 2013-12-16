@@ -412,3 +412,81 @@ describe('db-functions-config-authSchema-email', function() {
 	
 	
 })
+
+describe('db-functions-custom-model', function() {
+	var Scurvy = {};
+	var hook = {};
+	before(function(done) {
+		Scurvy = scurvy.createInstance({ authSchema: 'email' });
+		var database_config_to_use = '';
+		switch (process.env.NODE_ENV) {
+			case 'test_travis':
+				database_config_to_use = './config/database.travis';
+				break;
+			case undefined:
+			case 'production':
+			case 'development':
+				database_config_to_use = './config/database';
+				break;
+		}
+
+		var dbconfig = require(database_config_to_use).config;
+
+		var dbname = dbconfig.db;
+		var dbhostname = dbconfig.hostname;
+		var dbport = dbconfig.port;
+		var dbuser = dbconfig.user;
+		var dbpassword = dbconfig.password;
+
+		var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
+			host: dbhostname,
+			port: dbport,
+			sync: { force: true },
+			logging: false
+		});
+		hook.sequelize = sequelize;
+		
+		Scurvy.loadModels(hook);
+		Scurvy.setupAssociations(hook);
+		
+		hook['Preference'] = hook.sequelize.import(__dirname + '/fixtures/preference');
+
+		hook.User.hasOne(hook.Preference);
+		hook.Preference.belongsTo(hook.User);
+		
+		hook.Preference.sync({ force: true }).success(function() {
+			Scurvy.setupSync(hook, function(err) {
+				assert(err == null);
+				
+				done();
+			}, { force: true });
+		});
+	});
+	
+	describe('#verifyCredentials()', function() {
+		it('should return a user object with a preferences object for successful credentials (email, passwrd) with no error, or returns false if there is no match.', function(done_final) {
+			var theColor = 'red';
+			Scurvy.createUser({ email: 'someemail@something.com', passwrd: 'myPassword202', status: 'active' }, function(err, results) {
+				hook.Preference.create({color: theColor}).success(function(preference) {
+					results.user.setPreference(preference).success(function() {
+						async.parallel([
+							function(done) {
+								Scurvy.verifyCredentials({email: 'someemail@something.com', passwrd: 'myPassword202', include: [hook.Preference]}, function(verify_err, verify_result) {
+									assert(verify_err == null);
+									assert(verify_result.preference != undefined);
+									assert(verify_result.preference.color != undefined && verify_result.preference.color === theColor);
+									done();
+								});
+							}
+						], 
+						function(err1, results1) {
+							done_final();
+						});
+					});
+				});
+			});
+		});
+	});
+	
+	
+})
