@@ -1,6 +1,6 @@
 {
   "name": "scurvy",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A reusable node.js module for handling user registration and login scenarios.",
   "main": "index.js",
   "directories": {
@@ -32,8 +32,8 @@
     "should": "~1.2.2"
   },
   "dependencies": {
-    "bcrypt": "~0.7.5",
-    "joi": "~1.2.0",
-    "hoek": "~1.1.1"
+    "bcrypt": "^0.8.5",
+    "hoek": "~1.1.1",
+    "joi": "~1.2.0"
   }
 }
