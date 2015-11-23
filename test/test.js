@@ -113,20 +113,20 @@ describe('db-functions', function() {
 	});
 	
 	describe('#loadModels()', function() {
-		it ('should load the models User and Metastate into the sequelize hook.', function(done_final) {
-			assert(hook.User !== undefined);
-			assert(hook.Metastate !== undefined);
+		it ('should load the models user and metastate into the sequelize hook.', function(done_final) {
+			assert(hook.user !== undefined);
+			assert(hook.metastate !== undefined);
 			done_final();
 		})
 	});
 	
 	describe('#setupAssociations()', function() {
 		it ('should setup the sequelize hook so that User and Metastate can be associated.', function(done_final) {
-			hook.User.create({ userid: 'testassocuser', salt:'dfgfdgdfgdfg', hash:'etcetc101badhash', email: 'x@y.com' }).success(function(user) {
-				hook.Metastate.create({ status: 'active', hashkey: 'etc2349badhash' }).success(function(metastate) {
-					assert(metastate.UserId == undefined);
-					user.setMetastate(metastate).success(function() {
-						assert(user.id === metastate.UserId);
+			hook.user.create({ userid: 'testassocuser', salt:'dfgfdgdfgdfg', hash:'etcetc101badhash', email: 'x@y.com' }).then(function(user) {
+				hook.metastate.create({ status: 'active', hashkey: 'etc2349badhash' }).then(function(metastate) {
+					assert(metastate.userId == undefined);
+					user.setMetastate(metastate).then(function() {
+						assert(user.id === metastate.userId);
 						done_final();
 					});
 				});
@@ -156,8 +156,6 @@ describe('db-functions', function() {
 			});
 		});
 	});
-	
-	
 	
 	describe('#verifyCredentials() input validation', function() {
 		it('should error out if the input object does not at least contain the following properties: userid, passwrd.', function(done_final) {
@@ -365,7 +363,7 @@ describe('db-functions-config-authSchema-email', function() {
 
 	describe('#User model', function() {
 		it('should not have the userid field when authSchema is configured to email mode.', function(done_final) {
-			assert(hook.User.rawAttributes.userid === undefined);
+			assert(hook.user.rawAttributes.userid === undefined);
 			
 			done_final();
 		})
@@ -442,33 +440,33 @@ describe('db-functions-custom-model', function() {
 			host: dbhostname,
 			port: dbport,
 			sync: { force: true },
-			logging: false
+			logging: console.log
 		});
 		hook.sequelize = sequelize;
 		
 		Scurvy.loadModels(hook);
 		Scurvy.setupAssociations(hook);
 		
-		hook['Preference'] = hook.sequelize.import(__dirname + '/fixtures/preference');
+		hook['preference'] = hook.sequelize.import(__dirname + '/fixtures/preference');
 
-		hook.User.hasOne(hook.Preference);
-		hook.Preference.belongsTo(hook.User);
+		hook.user.hasOne(hook.preference);
+		hook.preference.belongsTo(hook.user);
 		
-		hook.Preference.sync({ force: true }).success(function() {
+		//hook.preference.sync({ force: true }).then(function() {
 			Scurvy.setupSync(hook, function(err) {
 				assert(err == null);
 				
 				done();
 			}, { force: true });
-		});
+		//});
 	});
 	
 	describe('#verifyCredentials()', function() {
 		it('should return a user object with a preferences object for successful credentials (email, passwrd) with no error, or returns false if there is no match.', function(done_final) {
 			var theColor = 'red';
 			Scurvy.createUser({ email: 'someemail@something.com', passwrd: 'myPassword202', status: 'active' }, function(err, results) {
-				hook.Preference.create({color: theColor}).success(function(preference) {
-					results.user.setPreference(preference).success(function() {
+				hook.preference.create({color: theColor}).then(function(preference) {
+					results.user.setPreference(preference).then(function() {
 						async.parallel([
 							function(done) {
 								Scurvy.verifyCredentials({email: 'someemail@something.com', passwrd: 'myPassword202', include: [hook.Preference]}, function(verify_err, verify_result) {
