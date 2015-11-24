@@ -440,7 +440,7 @@ describe('db-functions-custom-model', function() {
 			host: dbhostname,
 			port: dbport,
 			sync: { force: true },
-			logging: console.log
+			logging: false
 		});
 		hook.sequelize = sequelize;
 		
@@ -469,7 +469,7 @@ describe('db-functions-custom-model', function() {
 					results.user.setPreference(preference).then(function() {
 						async.parallel([
 							function(done) {
-								Scurvy.verifyCredentials({email: 'someemail@something.com', passwrd: 'myPassword202', include: [hook.Preference]}, function(verify_err, verify_result) {
+								Scurvy.verifyCredentials({email: 'someemail@something.com', passwrd: 'myPassword202', include: [hook.preference]}, function(verify_err, verify_result) {
 									assert(verify_err == null);
 									assert(verify_result.preference != undefined);
 									assert(verify_result.preference.color != undefined && verify_result.preference.color === theColor);
