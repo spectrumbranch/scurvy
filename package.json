@@ -30,10 +30,10 @@
     "should": "^7.1.1"
   },
   "dependencies": {
-    "bcrypt": "^0.8.5",
-    "hoek": "~1.1.1",
-    "joi": "~1.2.0",
-    "mysql": "^2.9.0",
-    "sequelize": "^3.14.1"
+    "bcrypt": "^0.8.7",
+    "hoek": "4.x.x",
+    "joi": "9.x.x",
+    "mysql": "2.x.x",
+    "sequelize": "3.x.x"
   }
 }
