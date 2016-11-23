@@ -23,7 +23,9 @@
   "author": "Christopher Bebry",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "gitHead": "958a281253ea428e9fd1c540aa7944058a2fb11c",
+  "engines": {
+    "node": ">=4.5.0"
+  },
   "devDependencies": {
     "async": "2.x.x",
     "mocha": "3.x.x",
