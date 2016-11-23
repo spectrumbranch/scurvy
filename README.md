@@ -11,7 +11,7 @@ Scurvy handles the creation of tables, as it comes with built-in schemas. Use of
 
 MIT License
 
-version 0.4.0
+version 1.0.0
 
 [![Build Status](https://api.travis-ci.org/spectrumbranch/scurvy.png)](http://travis-ci.org/spectrumbranch/scurvy)
 [![Dependency Status](https://david-dm.org/spectrumbranch/scurvy.svg)](https://david-dm.org/spectrumbranch/scurvy)
