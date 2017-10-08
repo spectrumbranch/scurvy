@@ -72,6 +72,7 @@ describe('no-db-functions', function() {
 describe('db-functions', function() {
 	var Scurvy = {};
 	var hook = {};
+	var sequelize = null;
 	before(function(done) {
 		Scurvy = scurvy.createInstance();
 		var database_config_to_use = '';
@@ -94,7 +95,7 @@ describe('db-functions', function() {
 		var dbuser = dbconfig.user;
 		var dbpassword = dbconfig.password;
 
-		var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
+		sequelize = new Sequelize(dbname, dbuser, dbpassword, {
 			host: dbhostname,
 			port: dbport,
 			dialect: 'mysql',
@@ -113,6 +114,10 @@ describe('db-functions', function() {
 			done();
 		}, { force: true });
 	});
+
+	after(function() {
+		sequelize.close();
+	})
 	
 	describe('#loadModels()', function() {
 		it ('should load the models user and metastate into the sequelize hook.', function(done_final) {
@@ -323,6 +328,7 @@ describe('db-functions', function() {
 describe('db-functions-config-authSchema-email', function() {
 	var Scurvy = {};
 	var hook = {};
+	var sequelize = null;
 	before(function(done) {
 		Scurvy = scurvy.createInstance( { authSchema: 'email' } );
 		var database_config_to_use = '';
@@ -345,7 +351,7 @@ describe('db-functions-config-authSchema-email', function() {
 		var dbuser = dbconfig.user;
 		var dbpassword = dbconfig.password;
 
-		var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
+		sequelize = new Sequelize(dbname, dbuser, dbpassword, {
 			host: dbhostname,
 			port: dbport,
 			dialect: 'mysql',
@@ -364,6 +370,10 @@ describe('db-functions-config-authSchema-email', function() {
 			done();
 		}, { force: true });
 	});
+
+	after(function() {
+		sequelize.close();
+	})
 
 	describe('#User model', function() {
 		it('should not have the userid field when authSchema is configured to email mode.', function(done_final) {
@@ -418,6 +428,7 @@ describe('db-functions-config-authSchema-email', function() {
 describe('db-functions-custom-model', function() {
 	var Scurvy = {};
 	var hook = {};
+	var sequelize = null;
 	before(function(done) {
 		Scurvy = scurvy.createInstance({ authSchema: 'email' });
 		var database_config_to_use = '';
@@ -440,7 +451,7 @@ describe('db-functions-custom-model', function() {
 		var dbuser = dbconfig.user;
 		var dbpassword = dbconfig.password;
 
-		var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
+		sequelize = new Sequelize(dbname, dbuser, dbpassword, {
 			host: dbhostname,
 			port: dbport,
 			dialect: 'mysql',
@@ -466,6 +477,10 @@ describe('db-functions-custom-model', function() {
 			}, { force: true });
 		//});
 	});
+
+	after(function() {
+		sequelize.close();
+	})
 	
 	describe('#verifyCredentials()', function() {
 		it('should return a user object with a preferences object for successful credentials (email, passwrd) with no error, or returns false if there is no match.', function(done_final) {
