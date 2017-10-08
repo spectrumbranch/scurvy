@@ -79,7 +79,8 @@ var dbpassword = dbconfig.password;
 
 var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
     host: dbhostname,
-    port: dbport
+    port: dbport,
+    dialect: 'mysql'
 });
 
 //list all custom models that will be loaded

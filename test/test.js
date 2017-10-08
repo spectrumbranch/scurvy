@@ -97,6 +97,8 @@ describe('db-functions', function() {
 		var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
 			host: dbhostname,
 			port: dbport,
+			dialect: 'mysql',
+			operatorsAliases: false,
 			sync: { force: true },
 			logging: false
 		});
@@ -346,6 +348,8 @@ describe('db-functions-config-authSchema-email', function() {
 		var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
 			host: dbhostname,
 			port: dbport,
+			dialect: 'mysql',
+			operatorsAliases: false,
 			sync: { force: true },
 			logging: false
 		});
@@ -439,6 +443,8 @@ describe('db-functions-custom-model', function() {
 		var sequelize = new Sequelize(dbname, dbuser, dbpassword, {
 			host: dbhostname,
 			port: dbport,
+			dialect: 'mysql',
+			operatorsAliases: false,
 			sync: { force: true },
 			logging: false
 		});
