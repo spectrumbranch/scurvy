@@ -32,7 +32,7 @@
     "should": "13.x.x"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "hoek": "5.x.x",
     "joi": "11.x.x",
     "mysql2": "1.x.x",
