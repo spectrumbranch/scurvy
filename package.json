@@ -36,6 +36,6 @@
     "hoek": "5.x.x",
     "joi": "11.x.x",
     "mysql2": "1.x.x",
-    "sequelize": "^4.44.3"
+    "sequelize": "^5.15.1"
   }
 }
